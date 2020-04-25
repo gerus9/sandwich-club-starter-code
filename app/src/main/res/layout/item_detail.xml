@@ -4,10 +4,10 @@
 	android:layout_height="wrap_content">
 
 	<android.support.v7.widget.AppCompatImageView
-		android:id="@+id/image_item"
 		android:layout_width="@dimen/image_size"
 		android:layout_height="@dimen/image_size"
 		android:layout_gravity="center"
+		android:src="@mipmap/ic_launcher_round"
 		android:contentDescription="@string/image_description" />
 
 	<android.support.v7.widget.AppCompatTextView
