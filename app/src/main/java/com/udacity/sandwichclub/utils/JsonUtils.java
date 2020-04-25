@@ -23,10 +23,11 @@ public class JsonUtils {
 		if (!TextUtils.isEmpty(json)) {
 			try {
 				JSONObject jsonSandwich = new JSONObject(json);
-				Sandwich sandwich = new Sandwich();
+				JSONObject jsonName = getJSONObject(jsonSandwich, "name");
 
-				sandwich.setMainName(getJSONText(jsonSandwich, "mainName"));
-				sandwich.setAlsoKnownAs(getArrayList(jsonSandwich, "alsoKnownAs"));
+				Sandwich sandwich = new Sandwich();
+				sandwich.setMainName(getJSONText(jsonName, "mainName"));
+				sandwich.setAlsoKnownAs(getArrayList(jsonName, "alsoKnownAs"));
 				sandwich.setPlaceOfOrigin(getJSONText(jsonSandwich, "placeOfOrigin"));
 				sandwich.setDescription(getJSONText(jsonSandwich, "description"));
 				sandwich.setImage(getJSONText(jsonSandwich, "image"));
@@ -39,10 +40,18 @@ public class JsonUtils {
 		return null;
 	}
 
-	private static List<String> getArrayList(JSONObject jsonSandwich, String key) {
-		if (jsonSandwich.has(key)) {
+	private static String getJSONText(@NonNull JSONObject jsonObject, String key) throws JSONException {
+		return jsonObject.has(key) ? jsonObject.getString(key) : "";
+	}
+
+	private static JSONObject getJSONObject(@NonNull JSONObject jsonObject, String key) throws JSONException {
+		return (jsonObject.has(key) ? jsonObject.getJSONObject(key) : new JSONObject());
+	}
+
+	private static List<String> getArrayList(JSONObject jsonObject, String key) {
+		if (jsonObject.has(key)) {
 			try {
-				JSONArray jsonArray = jsonSandwich.getJSONArray(key);
+				JSONArray jsonArray = jsonObject.getJSONArray(key);
 
 				List<String> list = new ArrayList<>();
 				for (int i = 0, l = jsonArray.length(); i < l; i++) {
@@ -55,9 +64,5 @@ public class JsonUtils {
 			}
 		}
 		return Collections.emptyList();
-	}
-
-	private static String getJSONText(@NonNull JSONObject jsonSandwich, String key) throws JSONException {
-		return jsonSandwich.has(key) ? jsonSandwich.getString(key) : "";
 	}
 }
