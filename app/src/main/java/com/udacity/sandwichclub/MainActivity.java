@@ -8,8 +8,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.udacity.sandwichclub.adapter.SandwichAdapter;
+import com.udacity.sandwichclub.adapter.SandwichCallback;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SandwichCallback {
     private Context context;
 
     @Override
@@ -22,12 +23,17 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.sandwiches_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(new SandwichAdapter(context, sandwiches));
+        recyclerView.setAdapter(new SandwichAdapter(context, sandwiches, this));
     }
 
     private void launchDetailActivity(int position) {
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(DetailActivity.EXTRA_POSITION, position);
         startActivity(intent);
+    }
+
+    @Override
+    public void onSandwichSelected(int position) {
+        launchDetailActivity(position);
     }
 }
